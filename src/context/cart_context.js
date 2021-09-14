@@ -9,8 +9,17 @@ import {
 } from '../actions'
 import cart_reducer from '../reducers/cart_reducer'
 
+const getLocalStorage = () => {
+  let cart = localStorage.getItem('cart')
+  if (cart) {
+    return JSON.parse(localStorage.getItem('cart'))
+  } else {
+    return []
+  }
+}
+
 const initialState = {
-  cart: [],
+  cart: getLocalStorage(),
   total_items: 0,
   total_amount: 0,
   shipping_fee: 534,
@@ -31,6 +40,10 @@ export const CartProvider = ({ children }) => {
   const toggleAmount = (id, value) => {}
   // clear cart
   const clearCart = () => {}
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(state.cart))
+  }, [state.cart])
 
   return (
     <CartContext.Provider

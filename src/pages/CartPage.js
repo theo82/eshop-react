@@ -6,12 +6,14 @@ import { CartContent, PageHero } from '../components'
 
 const CartPage = () => {
   const { cart } = useCartContext()
-  if (cart.lenght < 1) {
+  if (cart.length < 1) {
     return (
       <Wrapper className='page-100'>
         <div className='empty'>
           <h2>Your cart is empty</h2>
-          <Link to='/products'></Link>
+          <Link to='/products' className='btn'>
+            Fill it
+          </Link>
         </div>
       </Wrapper>
     )
