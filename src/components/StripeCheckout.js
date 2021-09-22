@@ -21,7 +21,7 @@ const CheckoutForm = () => {
   const history = useHistory()
 
   // STRIPE STUFF
-  const [suceeded, setSuceeded] = useState(false)
+  const [succeeded, setSucceeded] = useState(false)
   const [error, setError] = useState(null)
   const [processing, setProcessing] = useState('')
   const [disabled, setDisabled] = useState(true)
@@ -48,7 +48,12 @@ const CheckoutForm = () => {
   }
 
   const createPaymentIntent = async () => {
-    console.log('hello from stripe checkout')
+    try {
+      const data = await axios.post(
+        '/.netlify/functions/create-payment-intent',
+        JSON.stringify({ cart, shipping_fee, total_amount })
+      )
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -67,21 +72,21 @@ const CheckoutForm = () => {
           options={cardStyle}
           onChange={handleChange}
         />
-        <button disabled={processing || disabled || suceeded} id='submit'>
+        <button disabled={processing || disabled || succeeded} id='submit'>
           <span id='button-text'>
             {processing ? <div className='spinner' id='spinner'></div> : 'Pay'}
           </span>
         </button>
-        {/* Show any erros that happens when processing the payment */}
+        {/* Show any errors that happens when processing the payment */}
         {error && (
           <div className='card-error' role='alert'>
             {error}
           </div>
         )}
-        {/* Show a success message upon completion*/}
-        <p className={suceeded ? 'result-message' : 'result-message-hidden'}>
-          Payment succeded, see the result in your
-          <a href={`https://dashboard.stripe.com/test/payments`}>
+        {/* Show a success message*/}
+        <p className={succeeded ? 'result-message' : 'result-message hidden'}>
+          Payment succeeded, see the result in your
+          <a href={`https://dashboard.stribe.com/test/payments`}>
             Stripe dashboard
           </a>
           Refresh the page to pay again
